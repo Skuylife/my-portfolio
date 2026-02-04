@@ -1,7 +1,6 @@
 'use client';
 
-import Link from "next/link";
-import { useState } from "react";
+import { MouseEvent, useState } from "react";
 import { HiMenu, HiX } from "react-icons/hi";
 
 export default function Navbar() {
@@ -11,12 +10,32 @@ export default function Navbar() {
   const closeMenu = () => setIsOpen(false);
 
   const navLinks = [
-    { href: "/", label: "Home" },
-    { href: "#about", label: "About" },
-    { href: "#skills", label: "Skills" },
-    { href: "#projects", label: "Projects" },
-    { href: "#contact", label: "Contact" },
+    { target: "home", label: "Home" }, // Ganti href jadi target id
+    { target: "about", label: "About" },
+    { target: "skills", label: "Skills" },
+    { target: "projects", label: "Projects" },
+    { target: "contact", label: "Contact" },
   ];
+
+  // Fungsi untuk scroll tanpa mengubah URL
+  const handleScroll = (e: MouseEvent<HTMLButtonElement, MouseEvent>, targetId: string) => {
+    e.preventDefault(); // Mencegah perubahan URL
+    
+    const element = document.getElementById(targetId);
+    if (element) {
+      const offset = 80; // Sesuaikan dengan tinggi navbar Anda
+      const bodyRect = document.body.getBoundingClientRect().top;
+      const elementRect = element.getBoundingClientRect().top;
+      const elementPosition = elementRect - bodyRect;
+      const offsetPosition = elementPosition - offset;
+
+      window.scrollTo({
+        top: targetId === "home" ? 0 : offsetPosition,
+        behavior: "smooth",
+      });
+    }
+    closeMenu(); // Tutup menu di mobile setelah klik
+  };
 
   return (
     <>
@@ -27,13 +46,13 @@ export default function Navbar() {
           {/* Desktop Menu */}
           <div className="hidden md:flex space-x-6 text-sm text-gray-600">
             {navLinks.map((link) => (
-              <Link 
-                key={link.href} 
-                href={link.href}
-                className="hover:text-gray-900 transition"
+              <button 
+                key={link.target} 
+                onClick={(e) => handleScroll(e, link.target)}
+                className="hover:text-gray-900 transition cursor-pointer"
               >
                 {link.label}
-              </Link>
+              </button>
             ))}
           </div>
 
@@ -41,7 +60,6 @@ export default function Navbar() {
           <button
             onClick={toggleMenu}
             className="md:hidden text-gray-600 hover:text-gray-900 transition"
-            aria-label="Toggle menu"
           >
             {isOpen ? <HiX size={28} /> : <HiMenu size={28} />}
           </button>
@@ -69,14 +87,13 @@ export default function Navbar() {
         </div>
         <div className="flex flex-col space-y-6 px-6 py-4">
           {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              onClick={closeMenu}
-              className="text-gray-600 hover:text-gray-900 transition text-lg"
+            <button
+              key={link.target}
+              onClick={(e) => handleScroll(e, link.target)}
+              className="text-left text-gray-600 hover:text-gray-900 transition text-lg"
             >
               {link.label}
-            </Link>
+            </button>
           ))}
         </div>
       </div>
