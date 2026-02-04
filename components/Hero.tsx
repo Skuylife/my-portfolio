@@ -1,8 +1,31 @@
+'use client';
+
 import { FaGithub, FaLinkedin, FaEnvelope } from 'react-icons/fa';
 
 export default function Hero() {
+  const scrollToSection = (targetId: string) => {
+    const element = document.getElementById(targetId);
+    if (!element) return;
+
+    const offset = 80; // tinggi navbar
+    const bodyRect = document.body.getBoundingClientRect().top;
+    const elementRect = element.getBoundingClientRect().top;
+    const position = elementRect - bodyRect - offset;
+
+    window.scrollTo({
+      top: targetId === 'home' ? 0 : position,
+      behavior: 'smooth',
+    });
+
+    // pastikan URL tetap bersih (tanpa #hash)
+    window.history.replaceState(null, '', window.location.pathname);
+  };
+
   return (
-    <section className="min-h-screen flex flex-col justify-center items-center text-center pt-24 px-4">
+    <section
+      id="home"
+      className="min-h-screen flex flex-col justify-center items-center text-center pt-24 px-4"
+    >
       <h1 className="text-5xl md:text-6xl font-bold mb-4">
         Hi, I'm Arafah 👋
       </h1>
@@ -15,23 +38,25 @@ export default function Hero() {
 
       {/* Social Links */}
       <div className="flex gap-4 mt-6">
-        <a 
-          href="https://github.com/Skuylife" 
-          target="_blank" 
+        <a
+          href="https://github.com/Skuylife"
+          target="_blank"
           rel="noopener noreferrer"
           className="text-gray-400 hover:text-gray-900 transition"
         >
           <FaGithub size={24} />
         </a>
-        <a 
-          href="https://www.linkedin.com/in/habil-yakub-arapah-713514290/" 
-          target="_blank" 
+
+        <a
+          href="https://www.linkedin.com/in/habil-yakub-arapah-713514290/"
+          target="_blank"
           rel="noopener noreferrer"
           className="text-gray-400 hover:text-blue-600 transition"
         >
           <FaLinkedin size={24} />
         </a>
-        <a 
+
+        <a
           href="mailto:habilyakubarafah@gmail.com"
           className="text-gray-400 hover:text-red-500 transition"
         >
@@ -39,19 +64,21 @@ export default function Hero() {
         </a>
       </div>
 
+      {/* CTA Buttons */}
       <div className="mt-8 flex gap-4">
-        <a
-          href="#projects"
+        <button
+          onClick={() => scrollToSection('projects')}
           className="px-6 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition"
         >
           View Projects
-        </a>
-        <a
-          href="#contact"
+        </button>
+
+        <button
+          onClick={() => scrollToSection('contact')}
           className="px-6 py-2 border rounded-lg hover:bg-gray-50 transition"
         >
           Contact Me
-        </a>
+        </button>
       </div>
     </section>
   );
