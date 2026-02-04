@@ -8,7 +8,7 @@ const projects = [
   {
     title: "Padang Mobile - Official Documents Module",
     desc: "Developed a specialized 'Surat' widget meeting all UI/UX specifications and technical requirements for production-ready integration.",
-    tech: "React Native • API Integration",
+    tech: "Flutter • API Integration",
     type: "Professional"
   },
   {
